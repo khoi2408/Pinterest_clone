@@ -1,12 +1,29 @@
 "use client"
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSession, signIn, signOut } from "next-auth/react"
+import { doc, getFirestore, setDoc } from 'firebase/firestore'
 import { HiSearch, HiBell, HiChat } from 'react-icons/hi'
+import app from './../Shared/firebaseConfig'
 
 function Header() {
   const { data: session } = useSession()
-  console.log(session);
+  const db = getFirestore(app)
+  useEffect(() => {
+    saveUserInfo()
+  }, [session])
+
+  const saveUserInfo=async()=>{
+    if(session?.user)
+    {
+      await setDoc(doc(db, "user", session.user.email), {
+        userName: session.user.name,
+        email: session.user.email,
+        userImage: session.user.image
+      });
+    }
+  }
+
   return (
     <div className='flex gap-3 md:gap-2 items-center p-6'>
         <Image 
