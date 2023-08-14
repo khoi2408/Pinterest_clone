@@ -1,7 +1,7 @@
 "use client"
 import Image from 'next/image'
 import React, { useEffect } from 'react'
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signIn } from "next-auth/react"
 import { doc, getFirestore, setDoc } from 'firebase/firestore'
 import { HiSearch, HiBell, HiChat } from 'react-icons/hi'
 import app from '../Shared/firebaseConfig'
@@ -26,17 +26,30 @@ function Header() {
     }
   }
 
+  const onCreateClick=()=>{
+    if(session)
+    {
+      router.push('/pin-builder')
+    }
+    else{
+      signIn()
+    }
+  }
+
   return (
     <div className='flex gap-3 md:gap-2 items-center p-6'>
         <Image 
             src='/logo.png' 
             alt='logo' 
+            onClick={()=> router.push('/')}
             width={50} 
             height={50}
             className='hover:bg-gray-200 p-2 rounded-full cursor-pointer'
         />
-        <button className='bg-black text-white p-2 px-4 rounded-full hidden md:block'>Home</button>
-        <button className='font-semibold p-2 px-4 rounded-full'>Create</button>
+        <button className='bg-black text-white p-2 px-4 rounded-full hidden md:block' 
+          onClick={()=> router.push('/')}
+        >Home</button>
+        <button className='font-semibold p-2 px-4 rounded-full' onClick={onCreateClick}>Create</button>
 
         <div className='bg-[#e9e9e9] p-3 px-6 gap-3 items-center rounded-full w-full hidden md:flex'>
             <HiSearch className='text-[25px] text-gray-500' />
