@@ -4,10 +4,12 @@ import React, { useEffect } from 'react'
 import { useSession, signIn, signOut } from "next-auth/react"
 import { doc, getFirestore, setDoc } from 'firebase/firestore'
 import { HiSearch, HiBell, HiChat } from 'react-icons/hi'
-import app from './../Shared/firebaseConfig'
+import app from '../Shared/firebaseConfig'
+import { useRouter } from 'next/navigation'
 
 function Header() {
   const { data: session } = useSession()
+  const router = useRouter()
   const db = getFirestore(app)
   useEffect(() => {
     saveUserInfo()
@@ -43,7 +45,8 @@ function Header() {
             <HiChat className='text-[25px] md:text-[40px] text-gray-500 cursor-pointer'/>
             {session?.user?
             <Image 
-                src={session.user.image} 
+                src={session.user.image}
+                onClick={()=>router.push('/'+session.user.email)}
                 alt='user-image' 
                 width={50} 
                 height={50}
