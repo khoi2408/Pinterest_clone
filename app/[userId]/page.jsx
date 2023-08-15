@@ -39,7 +39,8 @@ function Profile({params}) {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
-    setListOfPins(prev=>[...prev,doc.data()])
+    setListOfPins((listOfPins)=>
+      [...listOfPins,doc.data()]);
     });
   }
 
